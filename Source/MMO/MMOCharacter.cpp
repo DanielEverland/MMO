@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AMMOCharacter
@@ -49,6 +50,8 @@ AMMOCharacter::AMMOCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,6 +100,21 @@ void AMMOCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
+}
+
+void AMMOCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CreateAttributes();
+}
+
+void AMMOCharacter::CreateAttributes()
+{
+	for (const TObjectPtr<UAttributeDefinition> Definition : Attributes)
+	{
+		AbilitySystemComponent->AddAttributeSetSubobject(Definition->CreateAttributeSet());
+	}
 }
 
 void AMMOCharacter::MoveForward(float Value)
