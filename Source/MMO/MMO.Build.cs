@@ -18,6 +18,7 @@ public class MMO : ModuleRules
 				"GameplayTags",
 				"GameplayTasks",
 				"GameplayAbilities",
+				"UMG",
 			}
 		);
 	}

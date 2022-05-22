@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "GAS/AttributeDefinition.h"
 #include "MMOCharacter.generated.h"
 
 UCLASS(config=Game)
-class AMMOCharacter : public ACharacter
+class AMMOCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -26,6 +27,8 @@ public:
 
 	virtual void BeginPlay() override;
 	void CreateAttributes();
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 
 protected:
 	/** Called for forwards/backward input */
